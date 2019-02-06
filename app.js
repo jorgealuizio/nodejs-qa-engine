@@ -6,7 +6,7 @@ const expressEjsLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
-const passport = require('passport');
+const passport = require('./src/passport');
 
 const app = express();
 
@@ -33,4 +33,8 @@ app.use(passport.session());
 require('./src/models/index');
 require('./src/index')(app);
 
-app.listen(app.get('PORT'), app.get('HOST'), () => console.log(`Express started at http://${app.get('HOST')}:${app.get('PORT')} Env: ${app.get('NODE_ENV')}`));
+app.listen(
+    app.get('PORT'),
+    app.get('HOST'),
+    () => console.log(`Express started at http://${app.get('HOST')}:${app.get('PORT')} Env: ${app.get('NODE_ENV')}`)
+);
