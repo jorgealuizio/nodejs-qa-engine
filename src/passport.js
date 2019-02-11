@@ -24,8 +24,16 @@ passport.serializeUser(function (user, done) {
     done(null, user);
 });
 
-passport.deserializeUser(function (user, done) {
-    done(null, user);
+passport.deserializeUser(async function (user, done) {
+    try {
+        const verify_user = await User.findById(user.id);
+        if (!verify_user) {
+            return done(new Error('Invalid user!'));
+        }
+        return done(null, verify_user);
+    } catch (error) {
+        console.log('ERROR:', error);
+    }
 });
 
 module.exports = passport;
