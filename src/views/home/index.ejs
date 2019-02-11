@@ -7,6 +7,7 @@
             </div>
             <div class="card-body">
                 <form action="/answers" method="post">
+                    <input type="hidden" name="answerUser" value="<%= answerUser.username %>">
                     <div class="form-group">
                         <textarea name="question" id="question" cols="30" rows="5" class="form-control" placeholder="Ask your question here..."></textarea>
                     </div>
@@ -29,39 +30,71 @@
                 People
             </div>
             <div class="card-body">
-                <div class="profile row mt-2">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                        <img src="https://api.adorable.io/avatars/150/adas.png" alt="" class="img-fluid img-profile">
+                <% sugestions.forEach(function(sugestion) { %>
+                    <div class="profile row mt-2">
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <img src="<%= sugestion.avatar %>" alt="" class="img-fluid img-profile">
+                        </div>
+                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 mt-2 name-info">
+                            <a href="/t/<%= sugestion.username %>"><%= sugestion.name %></a>
+                        </div>
                     </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 mt-2 name-info">
-                        <a href="">Jorge</a>
-                    </div>
-                </div>
+                <% }); %>
             </div>
         </div>
     </aside>
+    <!--https://api.adorable.io/avatars/150/adas.png-->
     <section class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
-        <div class="row mt-2 question-box">
-            <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="card-body">
-                    <div class="profile row">
-                        <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
-                            <img src="https://api.adorable.io/avatars/150/adas.png" alt="" class="img-fluid img-profile">
+        <% answers.forEach(function(data) { %>
+            <div class="row mt-2 question-box">
+                <div class="card col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card-body">
+                        <div class="profile row">
+                            <% if(data.is_annon) { %>
+                                <div class="profile row">
+                                    <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+                                        <img src="https://www.highcountryconservation.org/wp-content/uploads/sites/16/2017/08/generic_image_missing-profile.jpg" alt="" class="img-fluid img-profile">
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8 mt-2 name-info">
+                                        <a href="">Annon</a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <% if(checkUserDelete(user, answerUser)) { %>
+                                            <form action="/answers/<%= data.id %>?_method=DELETE" method="POST">
+                                                <button type="submit" class="btn btn-link">Delete</button>
+                                            </form>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% } else { %>
+                                <div class="profile row">
+                                    <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+                                        <img src="<%= data.questionUser.avatar %>" alt="" class="img-fluid img-profile">
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8 mt-2 name-info">
+                                        <a href="/t/<%= data.questionUser.name %>"><%= data.questionUser.name %></a>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <% if(checkUserDelete(user, answerUser)) { %>
+                                            <form action="/answers/<%= data.id %>?_method=DELETE" method="POST">
+                                                <button type="submit" class="btn btn-link">Delete</button>
+                                            </form>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% } %>
                         </div>
-                        <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10 mt-2 name-info">
-                            <a href="">Jorge Aluizio</a>
-                        </div>
-                    </div>
-                    <blockquote class="blockquote">
-                        <p>
-                            Lorem ipsum simulando qualqeuer pergunta para teste?
-                        </p>
-                    </blockquote>
-                    <div class="blockquote-footer ml-2">
-                        Resposta para Lorem ipsum simulando qualqeuer pergunta para teste?
+                        <blockquote class="blockquote">
+                            <p>
+                                <%= data.question %>
+                            </p>
+                            <div class="blockquote-footer ml-2">
+                                <%= data.answer %>
+                            </div>
+                        </blockquote>
                     </div>
                 </div>
             </div>
-        </div>
+        <% }); %>
     </section>
 </div>

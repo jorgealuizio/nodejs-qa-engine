@@ -32,6 +32,7 @@ app.use(passport.session());
 
 require('./src/models/index');
 require('./src/index')(app);
+require('./src/helpers')(app);
 
 app.listen(
     app.get('PORT'),
